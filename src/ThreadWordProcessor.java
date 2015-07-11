@@ -9,11 +9,11 @@ import java.io.UnsupportedEncodingException;
 		public static final int BitToStr = 3;
 		public static final int StrToBit = 4;
 		
-		public static final int HexToBinary = 5;
-		public static final int BinaryToHex = 6;
+		public static final int HexToBit = 5;
+		public static final int BitToHex = 6;
 		
-		public static final int StringToHex = 7;
-		public static final int HexToString = 8;
+		public static final int StrToHex = 7;
+		public static final int HexToStr = 8;
 
 		public int state;
 		int length;
@@ -49,12 +49,18 @@ import java.io.UnsupportedEncodingException;
 		
 		private void bitToStr() {
 			String hex = binaryToHex(this.binary);
+			this.hex = hex;
+			if(state==ThreadWordProcessor.BitToStr){
 			String unicode = hexToUnicode(hex);
 			String rev_text = Unicode2String(unicode);
 			this.text = rev_text;
 			if(pool!=null)
 				pool[index] = text;
-			
+			}
+			else if(state==ThreadWordProcessor.BitToHex){
+				if(pool!=null)
+					pool[index] = hex;
+			}
 		}
 
 		private String ByteBinaryToHex(String s){
@@ -71,6 +77,10 @@ import java.io.UnsupportedEncodingException;
 		
 		public String getMsg() {
 			return msg;
+		}
+		
+		public String getHex() {
+			return hex;
 		}
 		
 		public String getResult() {
@@ -131,7 +141,7 @@ import java.io.UnsupportedEncodingException;
 					e.printStackTrace();
 				}
 				break;
-			case StringToHex:
+			case StrToHex:
 				try {
 					stringToHex();
 				} catch (UnsupportedEncodingException e) {
@@ -139,12 +149,14 @@ import java.io.UnsupportedEncodingException;
 					e.printStackTrace();
 				}
 				break;
-			case HexToString:
+			case HexToStr:
 					hexToString();
 				break;
-			case BinaryToHex:
+			case BitToHex:
+					bitToStr();
 				break;
-			case HexToBinary:
+			case HexToBit:
+					hexToBit();
 				break;
 			}
 		}
@@ -160,6 +172,12 @@ import java.io.UnsupportedEncodingException;
 		private void stringToHex() throws UnsupportedEncodingException {
 			String unicodehex = String2Unicode(this.text);
 			this.hex = unicodehex;
+			if(pool!=null)
+				pool[index] = hex;
+		}
+		
+		private void hexToBit(){
+			this.binary = hexToBinary(this.hex);
 			if(pool!=null)
 				pool[index] = hex;
 		}
@@ -180,6 +198,10 @@ import java.io.UnsupportedEncodingException;
 			this.binary = binary;
 		}
 
+		public void setHex(String hex) {
+			this.hex = hex;
+		}		
+		
 		public String getText() {
 			return text;
 		}
