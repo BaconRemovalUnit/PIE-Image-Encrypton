@@ -1,7 +1,7 @@
 import java.io.UnsupportedEncodingException;
 
 	
-	public class WordProcess implements Runnable{
+	public class ThreadWordProcessor implements Runnable{
 
 		public static final int KEYGEN = 1;
 		public static final int XOR = 2;
@@ -29,11 +29,11 @@ import java.io.UnsupportedEncodingException;
 		
 		
 
-		public WordProcess(int take) {
+		public ThreadWordProcessor(int take) {
 			this.length = take;
 		}
 		
-		public WordProcess(int index, int take) {
+		public ThreadWordProcessor(int index, int take) {
 			this.index  = index;
 			this.length = take;
 		}
@@ -251,9 +251,7 @@ import java.io.UnsupportedEncodingException;
 		    StringBuffer string = new StringBuffer();
 		    String[] hex = unicode.split("\\\\u");
 		    for (int i = 1; i < hex.length; i++) {
-		        // 转换出每一个代码点
 		        int data = Integer.parseInt(hex[i], 16);
-		        // 追加成string
 		        string.append((char) data);
 		    }
 		    return string.toString();
