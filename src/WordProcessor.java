@@ -2,6 +2,8 @@ import java.io.UnsupportedEncodingException;
 
 
 public class WordProcessor{
+	
+	//returns a random sequence of 1 and 0 with length*24
 	static String keyGen(int length){
 		StringBuilder key = new StringBuilder();
 		//generate all for all pixel
@@ -126,8 +128,19 @@ public class WordProcessor{
 		return sb.toString();
 	}
 	
+	//remove the extra 0s at the end of the binary string
+	public static String trimBinaryTail(String str){
+		int index = str.lastIndexOf("0000000000000000");
+		while(index != -1){
+			str = str.substring(0, index);
+			index = str.lastIndexOf("0000000000000000");
+		}
+		return str;
+	}
+	
 	//binary string to normal text
 	public static String BitToString(String str){
+		str = trimBinaryTail(str);
 		StringBuilder sb = new StringBuilder();
 		int length = str.length();
 		//generate all for all pixel
@@ -248,9 +261,4 @@ public class WordProcessor{
 				sb.append(remainder.getBinary());
 		return sb.toString();
 	}
-
-	
-	//returns a random sequence of 1 and 0 with length*24
-
-
 }
